@@ -118,6 +118,12 @@
 // Invoked when you discover the characteristics of a specified service.
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
+	if (error) {
+        [self cleanup];
+        return;
+    }
+
+
 	if ([service.UUID isEqual:[CBUUID UUIDWithString:POLARH7_HRM_HEART_RATE_SERVICE_UUID]])  {  // 1
 		for (CBCharacteristic *aChar in service.characteristics)
 		{

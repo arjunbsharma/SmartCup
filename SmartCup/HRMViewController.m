@@ -92,6 +92,29 @@
 	}
 }
 
+//ADDED CLEANUP FUNCTION
+- (void)cleanup {
+     
+    // See if we are subscribed to a characteristic on the peripheral
+    if (_discoveredPeripheral.services != nil) {
+        for (CBService *service in _discoveredPeripheral.services) {
+            if (service.characteristics != nil) {
+                for (CBCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:TRANSFER_CHARACTERISTIC_UUID]]) {
+                        if (characteristic.isNotifying) {
+                            [_discoveredPeripheral setNotifyValue:NO forCharacteristic:characteristic];
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+ 
+    [_centralManager cancelPeripheralConnection:_discoveredPeripheral];
+}
+
+
 // Invoked when you discover the characteristics of a specified service.
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {

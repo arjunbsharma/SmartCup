@@ -234,6 +234,8 @@
 
 // instance method to simulate our pulsating Heart Beat
 - (void) doHeartBeat
+
+
 {
 	CALayer *layer = [self heartImage].layer;
 	CABasicAnimation *pulseAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
